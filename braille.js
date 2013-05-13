@@ -9,16 +9,17 @@ var BrailleLetter = function() {
 		checkbox = document.createElement('input');
 		checkbox.type = "checkbox";
 		checkbox.value = Math.pow(2, i);
+		checkbox.letter = this;
+		checkbox.onclick = function() { this.letter.updateResult(); }
 		this.checkboxes[i] = checkbox;
 		if(!(i%2)) this.letter.appendChild(document.createElement('br'));
 		this.letter.appendChild(checkbox);
 	}
-	this.button = document.createElement('input');
-	this.button.type = 'button';
-	this.button.letter = this;
-	this.button.onclick = function() { console.log(this.letter.character()); }
-	this.button.value = "Dame!";
-	this.letter.appendChild(this.button);
+
+	this.output = document.createElement('input');
+	this.output.readonly = true;
+	this.letter.appendChild(this.output);
+
 	letters[letters.length] = this.letter;
 	container.appendChild(this.letter);
 }
@@ -35,4 +36,8 @@ BrailleLetter.prototype.code = function() {
 
 BrailleLetter.prototype.character = function() {
 	return alphabet[this.code()];
+}
+
+BrailleLetter.prototype.updateResult = function() {
+	this.output.value = this.character();
 }
