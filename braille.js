@@ -1,6 +1,6 @@
 var container = document.getElementById('letters_container');
 
-var alphabet = { 1: 'a', 2: 'b', 3: 'c', 4: 'd' }
+var alphabet = { 1: 'a', 5: 'b', 3: 'c', 11: 'd', 9: 'e', 7 : 'f', 15: 'g', 13: 'h', 6: 'i', 14: 'j', 17: 'k', 21: 'l', 19: 'm', 27: 'n', 47: 'ñ', 25: 'o', 23: 'p', 31: 'q', 29: 'r', 22: 's', 30: 't', 49: 'u', 53: 'v', 46: 'w', 51: 'x', 59: 'y', 57: 'z' }
 var letters = [];
 var BrailleLetter = function() {
 	this.checkboxes = [];
