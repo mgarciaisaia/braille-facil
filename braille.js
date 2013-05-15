@@ -1,6 +1,17 @@
 var container = document.getElementById('letters_container');
 
-var alphabet = { 1: 'a', 5: 'b', 3: 'c', 11: 'd', 9: 'e', 7 : 'f', 15: 'g', 13: 'h', 6: 'i', 14: 'j', 17: 'k', 21: 'l', 19: 'm', 27: 'n', 47: 'ñ', 25: 'o', 23: 'p', 31: 'q', 29: 'r', 22: 's', 30: 't', 49: 'u', 53: 'v', 46: 'w', 51: 'x', 59: 'y', 57: 'z' }
+var alphabet = (function(lettersToCodes){
+	var codesToLetters = {};
+	for(var letter in lettersToCodes) {
+		codesToLetters[lettersToCodes[letter]] = letter;
+	}
+
+	return {
+		getLetter: function(code) {
+			return codesToLetters[code];
+		}
+	};
+})({'a':1,'c':3,'b':5,'i':6,'f':7,'e':9,'d':11,'h':13,'j':14,'g':15,'k':17,'m':19,'l':21,'s':22,'p':23,'o':25,'n':27,'r':29,'t':30,'q':31,'w':46,'ñ':47,'u':49,'x':51,'v':53,'z':57,'y':59});
 var letters = [];
 var BrailleLetter = function() {
 	this.checkboxes = [];
@@ -42,7 +53,7 @@ BrailleLetter.prototype.code = function() {
 };
 
 BrailleLetter.prototype.character = function() {
-	return alphabet[this.code()];
+	return alphabet.getLetter(this.code());
 };
 
 BrailleLetter.prototype.updateResult = function() {
