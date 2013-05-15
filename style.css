@@ -1,6 +1,7 @@
 .letter {
 	display: inline-block;
 	width: 40px;
+	margin: 3px;
 }
 .letter>div {
 	display: block;
