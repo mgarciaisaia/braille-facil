@@ -6,7 +6,7 @@ var BrailleLetter = function() {
 	this.checkboxes = [];
 	this.letter = document.createElement('div');
 	this.letter.className = 'letter';
-	var row;
+	var that = this, row;
 	for(i = 0; i < 6; i++) {
 		if(!(i % 2)) {
 			row = document.createElement('div');
@@ -15,8 +15,9 @@ var BrailleLetter = function() {
 		checkbox = document.createElement('input');
 		checkbox.type = "checkbox";
 		checkbox.value = Math.pow(2, i);
-		checkbox.letter = this;
-		checkbox.onclick = function() { this.letter.updateResult(); }
+		checkbox.onclick = function() {
+			that.updateResult();
+		};
 		this.checkboxes[i] = checkbox;
 		row.appendChild(checkbox);
 	}
@@ -28,7 +29,7 @@ var BrailleLetter = function() {
 
 	letters[letters.length] = this.letter;
 	container.appendChild(this.letter);
-}
+};
 
 BrailleLetter.prototype.code = function() {
 	code = 0;
@@ -38,12 +39,12 @@ BrailleLetter.prototype.code = function() {
 		}
 	}
 	return code;
-}
+};
 
 BrailleLetter.prototype.character = function() {
 	return alphabet[this.code()];
-}
+};
 
 BrailleLetter.prototype.updateResult = function() {
 	this.output.value = this.character();
-}
+};
