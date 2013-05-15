@@ -35,7 +35,7 @@ var BrailleLetter = function() {
 
 	this.output = document.createElement('input');
 	this.output.type = 'text';
-	this.output.readonly = true;
+	this.output.readOnly = true;
 	this.letter.appendChild(this.output);
 
 	letters[letters.length] = this.letter;
