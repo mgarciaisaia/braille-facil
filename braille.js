@@ -57,5 +57,6 @@ BrailleLetter.prototype.character = function() {
 };
 
 BrailleLetter.prototype.updateResult = function() {
-	this.output.value = this.character();
+	this.output.className = this.character() ? '' : 'error';
+	this.output.value = this.character() || '';
 };
