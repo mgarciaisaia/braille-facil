@@ -1,0 +1,10 @@
+.letter {
+	display: inline-block;
+	width: 40px;
+}
+.letter>div {
+	display: block;
+}
+.letter input[type=text] {
+	width: 100%;
+}

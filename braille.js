@@ -4,19 +4,25 @@ var alphabet = { 1: 'a', 5: 'b', 3: 'c', 11: 'd', 9: 'e', 7 : 'f', 15: 'g', 13: 
 var letters = [];
 var BrailleLetter = function() {
 	this.checkboxes = [];
-	this.letter = document.createElement('span');
-	for(i = 0; i<6; i++) {
+	this.letter = document.createElement('div');
+	this.letter.className = 'letter';
+	var row;
+	for(i = 0; i < 6; i++) {
+		if(!(i % 2)) {
+			row = document.createElement('div');
+			this.letter.appendChild(row);
+		}
 		checkbox = document.createElement('input');
 		checkbox.type = "checkbox";
 		checkbox.value = Math.pow(2, i);
 		checkbox.letter = this;
 		checkbox.onclick = function() { this.letter.updateResult(); }
 		this.checkboxes[i] = checkbox;
-		if(!(i%2)) this.letter.appendChild(document.createElement('br'));
-		this.letter.appendChild(checkbox);
+		row.appendChild(checkbox);
 	}
 
 	this.output = document.createElement('input');
+	this.output.type = 'text';
 	this.output.readonly = true;
 	this.letter.appendChild(this.output);
 
