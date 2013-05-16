@@ -19,7 +19,7 @@ var outputText = (function() {
 	outputContainer.appendChild(output);
 	container.appendChild(outputContainer);
 	return output;
-})()
+})();
 
 var letters = [];
 var BrailleLetter = function() {
@@ -47,17 +47,17 @@ var BrailleLetter = function() {
 	this.output.readOnly = true;
 	this.letter.appendChild(this.output);
 
-	letters[letters.length] = this;
+	letters.push(this);
 	container.appendChild(this.letter);
 };
 
 BrailleLetter.prototype.code = function() {
 	code = 0;
-	for(i in this.checkboxes) {
-		if(this.checkboxes[i].checked) {
-			code += parseInt(this.checkboxes[i].value);
+	this.checkboxes.forEach(function(checkbox) {
+		if(checkbox.checked) {
+			code += parseInt(checkbox.value);
 		}
-	}
+	});
 	return code;
 };
 
@@ -73,9 +73,9 @@ BrailleLetter.prototype.updateResult = function() {
 
 function updateOutput() {
 	var output = '';
-	for(i in letters) {
-		output += letters[i].character() || ' ';
-	}
+	letters.forEach(function(aLetter) {
+		output += aLetter.character() || ' ';
+	});
 	outputText.value = output;
 };
 
