@@ -6,7 +6,7 @@ Array.prototype.remove = function(element) {
 	return this;
 };
 
-var container = document.getElementById('letters_container');
+var container = document.getElementById('braille-wrapper');
 
 var alphabet = (function(lettersToCodes){
 	var codesToLetters = {};
@@ -38,29 +38,29 @@ var outputText = (function() {
 
 var cells = [];
 var BrailleCell = function() {
-	this.checkboxes = [];
-	this.letter = document.createElement('div');
-	this.letter.className = 'letter';
+	this.dots = [];
+	this.cell = document.createElement('div');
+	this.cell.className = 'cell';
 	var that = this, row;
 	[0,1,2,3,4,5].forEach(function(i) {
 		if(!(i % 2)) {
 			row = document.createElement('div');
-			that.letter.appendChild(row);
+			that.cell.appendChild(row);
 		}
-		var checkbox = document.createElement('input');
-		checkbox.type = "checkbox";
-		checkbox.value = Math.pow(2, i);
-		checkbox.onclick = function() {
+		var dot = document.createElement('input');
+		dot.type = "checkbox";
+		dot.value = Math.pow(2, i);
+		dot.onclick = function() {
 			that.updateResult();
 		};
-		that.checkboxes.push(checkbox);
-		row.appendChild(checkbox);
+		that.dots.push(dot);
+		row.appendChild(dot);
 	});
 
 	this.output = document.createElement('input');
 	this.output.type = 'text';
 	this.output.readOnly = true;
-	this.letter.appendChild(this.output);
+	this.cell.appendChild(this.output);
 
 	var deleteButton = document.createElement('input');
 	deleteButton.type = 'button';
@@ -70,17 +70,17 @@ var BrailleCell = function() {
 		that.delete();
 	};
 
-	this.letter.appendChild(deleteButton);
+	this.cell.appendChild(deleteButton);
 
 	cells.push(this);
-	container.appendChild(this.letter);
+	container.appendChild(this.cell);
 };
 
 BrailleCell.prototype.code = function() {
 	code = 0;
-	this.checkboxes.forEach(function(checkbox) {
-		if(checkbox.checked) {
-			code += parseInt(checkbox.value);
+	this.dots.forEach(function(aDot) {
+		if(aDot.checked) {
+			code += parseInt(aDot.value);
 		}
 	});
 	return code;
@@ -98,7 +98,7 @@ BrailleCell.prototype.updateResult = function() {
 
 
 BrailleCell.prototype.delete = function() {
-	this.letter.parentNode && this.letter.parentNode.removeChild(this.letter);
+	this.cell.parentNode && this.cell.parentNode.removeChild(this.cell);
 	cells.remove(this);
 	outputText.update();
 };

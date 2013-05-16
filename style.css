@@ -1,18 +1,18 @@
-.letter {
+.cell {
 	display: inline-block;
 	width: 40px;
 	margin: 3px;
 }
-.letter>div {
+.cell>div {
 	display: block;
 }
-.letter input[type=text] {
+.cell input[type=text] {
 	width: 15px;
 }
-.letter input[type=text].error {
+.cell input[type=text].error {
 	border-color: red;
 }
-.letter input.delete {
+.cell input.delete {
 	width: 21px;
 	padding: 0px;
 }
