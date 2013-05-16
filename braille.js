@@ -29,15 +29,15 @@ var outputText = (function() {
 
 	return {
 		update: function() {
-			outputText.value = letters.reduce(function(text, aLetter) {
-				return text + (aLetter.getCharacter() || ' ');
+			outputText.value = cells.reduce(function(text, aCell) {
+				return text + (aCell.getCharacter() || ' ');
 			}, '');
 		}
 	};
 })();
 
-var letters = [];
-var BrailleLetter = function() {
+var cells = [];
+var BrailleCell = function() {
 	this.checkboxes = [];
 	this.letter = document.createElement('div');
 	this.letter.className = 'letter';
@@ -72,11 +72,11 @@ var BrailleLetter = function() {
 
 	this.letter.appendChild(deleteButton);
 
-	letters.push(this);
+	cells.push(this);
 	container.appendChild(this.letter);
 };
 
-BrailleLetter.prototype.code = function() {
+BrailleCell.prototype.code = function() {
 	code = 0;
 	this.checkboxes.forEach(function(checkbox) {
 		if(checkbox.checked) {
@@ -86,21 +86,21 @@ BrailleLetter.prototype.code = function() {
 	return code;
 };
 
-BrailleLetter.prototype.getCharacter = function() {
+BrailleCell.prototype.getCharacter = function() {
 	return alphabet.getLetter(this.code());
 };
 
-BrailleLetter.prototype.updateResult = function() {
+BrailleCell.prototype.updateResult = function() {
 	this.output.className = this.getCharacter() ? '' : 'error';
 	this.output.value = this.getCharacter() || '';
 	outputText.update();
 };
 
 
-BrailleLetter.prototype.delete = function() {
+BrailleCell.prototype.delete = function() {
 	this.letter.parentNode && this.letter.parentNode.removeChild(this.letter);
-	letters.remove(this);
+	cells.remove(this);
 	outputText.update();
 };
 
-new BrailleLetter();
+new BrailleCell();
