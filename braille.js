@@ -22,7 +22,7 @@ var outputText = (function() {
 	return {
 		update: function() {
 			outputText.value = letters.reduce(function(text, aLetter) {
-				return text + aLetter.character() || ' ';
+				return text + aLetter.getCharacter() || ' ';
 			}, '');
 		}
 	};
@@ -68,13 +68,13 @@ BrailleLetter.prototype.code = function() {
 	return code;
 };
 
-BrailleLetter.prototype.character = function() {
+BrailleLetter.prototype.getCharacter = function() {
 	return alphabet.getLetter(this.code());
 };
 
 BrailleLetter.prototype.updateResult = function() {
-	this.output.className = this.character() ? '' : 'error';
-	this.output.value = this.character() || '';
+	this.output.className = this.getCharacter() ? '' : 'error';
+	this.output.value = this.getCharacter() || '';
 	outputText.update();
 }
 
