@@ -60,3 +60,5 @@ BrailleLetter.prototype.updateResult = function() {
 	this.output.className = this.character() ? '' : 'error';
 	this.output.value = this.character() || '';
 };
+
+new BrailleLetter();
