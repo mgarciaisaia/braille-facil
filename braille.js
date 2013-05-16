@@ -21,11 +21,9 @@ var outputText = (function() {
 
 	return {
 		update: function() {
-			var output = '';
-			letters.forEach(function(aLetter) {
-				output += aLetter.character() || ' ';
-			});
-			outputText.value = output;
+			outputText.value = letters.reduce(function(text, aLetter) {
+				return text + aLetter.character() || ' ';
+			}, '');
 		}
 	};
 })();
