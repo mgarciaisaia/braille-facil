@@ -1,3 +1,11 @@
+Array.prototype.remove = function(element) {
+	var index;
+	while((index = this.indexOf(element)) != -1) {
+		this.splice(index, 1);
+	}
+	return this;
+};
+
 var container = document.getElementById('letters_container');
 
 var alphabet = (function(lettersToCodes){
@@ -54,6 +62,16 @@ var BrailleLetter = function() {
 	this.output.readOnly = true;
 	this.letter.appendChild(this.output);
 
+	var deleteButton = document.createElement('input');
+	deleteButton.type = 'button';
+	deleteButton.value = 'x';
+	deleteButton.className = 'delete';
+	deleteButton.onclick = function() {
+		that.delete();
+	};
+
+	this.letter.appendChild(deleteButton);
+
 	letters.push(this);
 	container.appendChild(this.letter);
 };
@@ -76,6 +94,13 @@ BrailleLetter.prototype.updateResult = function() {
 	this.output.className = this.getCharacter() ? '' : 'error';
 	this.output.value = this.getCharacter() || '';
 	outputText.update();
-}
+};
+
+
+BrailleLetter.prototype.delete = function() {
+	this.letter.parentNode && this.letter.parentNode.removeChild(this.letter);
+	letters.remove(this);
+	outputText.update();
+};
 
 new BrailleLetter();

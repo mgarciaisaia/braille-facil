@@ -7,8 +7,12 @@
 	display: block;
 }
 .letter input[type=text] {
-	width: 100%;
+	width: 15px;
 }
 .letter input[type=text].error {
 	border-color: red;
+}
+.letter input.delete {
+	width: 21px;
+	padding: 0px;
 }
