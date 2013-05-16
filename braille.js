@@ -30,7 +30,7 @@ var outputText = (function() {
 	return {
 		update: function() {
 			outputText.value = letters.reduce(function(text, aLetter) {
-				return text + aLetter.getCharacter() || ' ';
+				return text + (aLetter.getCharacter() || ' ');
 			}, '');
 		}
 	};
