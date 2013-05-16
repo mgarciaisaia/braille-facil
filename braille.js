@@ -19,7 +19,7 @@ var alphabet = (function(lettersToCodes){
 			return codesToLetters[code];
 		}
 	};
-})({'a':1,'c':3,'b':5,'i':6,'f':7,'e':9,'d':11,'h':13,'j':14,'g':15,'k':17,'m':19,'l':21,'s':22,'p':23,'o':25,'n':27,'r':29,'t':30,'q':31,'w':46,'ñ':47,'u':49,'x':51,'v':53,'z':57,'y':59});
+})({'a':1,'b':3,'c':9,'d':25,'e':17,'f':11,'g':27,'h':19,'i':10,'j':26,'k':5,'l':7,'m':13,'n':29,'o':21,'p':15,'q':31,'r':23,'s':14,'t':30,'u':37,'v':39,'x':45,'y':61,'z':53,'ñ':59});
 
 var outputText = (function() {
 	var outputText = document.createElement('textarea');
@@ -42,14 +42,14 @@ var BrailleCell = function() {
 	this.cell = document.createElement('div');
 	this.cell.className = 'cell';
 	var that = this, row;
-	[0,1,2,3,4,5].forEach(function(i) {
+	[0,3,1,4,2,5].forEach(function(value, i) {
 		if(!(i % 2)) {
 			row = document.createElement('div');
 			that.cell.appendChild(row);
 		}
 		var dot = document.createElement('input');
 		dot.type = "checkbox";
-		dot.value = Math.pow(2, i);
+		dot.value = Math.pow(2, value);
 		dot.onclick = function() {
 			that.updateResult();
 		};
