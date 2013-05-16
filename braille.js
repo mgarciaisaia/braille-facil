@@ -27,20 +27,20 @@ var BrailleLetter = function() {
 	this.letter = document.createElement('div');
 	this.letter.className = 'letter';
 	var that = this, row;
-	for(i = 0; i < 6; i++) {
+	[0,1,2,3,4,5].forEach(function(i) {
 		if(!(i % 2)) {
 			row = document.createElement('div');
-			this.letter.appendChild(row);
+			that.letter.appendChild(row);
 		}
-		checkbox = document.createElement('input');
+		var checkbox = document.createElement('input');
 		checkbox.type = "checkbox";
 		checkbox.value = Math.pow(2, i);
 		checkbox.onclick = function() {
 			that.updateResult();
 		};
-		this.checkboxes[i] = checkbox;
+		that.checkboxes.push(checkbox);
 		row.appendChild(checkbox);
-	}
+	});
 
 	this.output = document.createElement('input');
 	this.output.type = 'text';
