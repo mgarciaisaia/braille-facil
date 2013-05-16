@@ -14,11 +14,20 @@ var alphabet = (function(lettersToCodes){
 })({'a':1,'c':3,'b':5,'i':6,'f':7,'e':9,'d':11,'h':13,'j':14,'g':15,'k':17,'m':19,'l':21,'s':22,'p':23,'o':25,'n':27,'r':29,'t':30,'q':31,'w':46,'ñ':47,'u':49,'x':51,'v':53,'z':57,'y':59});
 
 var outputText = (function() {
-	var output = document.createElement('textarea');
+	var outputText = document.createElement('textarea');
 	outputContainer = document.createElement('div');
-	outputContainer.appendChild(output);
+	outputContainer.appendChild(outputText);
 	container.appendChild(outputContainer);
-	return output;
+
+	return {
+		update: function() {
+			var output = '';
+			letters.forEach(function(aLetter) {
+				output += aLetter.character() || ' ';
+			});
+			outputText.value = output;
+		}
+	};
 })();
 
 var letters = [];
@@ -68,15 +77,7 @@ BrailleLetter.prototype.character = function() {
 BrailleLetter.prototype.updateResult = function() {
 	this.output.className = this.character() ? '' : 'error';
 	this.output.value = this.character() || '';
-	updateOutput();
+	outputText.update();
 }
-
-function updateOutput() {
-	var output = '';
-	letters.forEach(function(aLetter) {
-		output += aLetter.character() || ' ';
-	});
-	outputText.value = output;
-};
 
 new BrailleLetter();
