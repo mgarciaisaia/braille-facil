@@ -1,6 +1,5 @@
 .cell {
 	display: inline-block;
-	width: 40px;
 	margin: 3px;
 }
 .cell>div {
