@@ -8,7 +8,7 @@ Array.prototype.remove = function(element) {
 
 var container = document.getElementById('braille-wrapper');
 
-var alphabet = (function(lettersToCodes){
+var alphabet = (function(lettersToCodes, capitalCode, numeralCode){
 	var codesToLetters = {};
 	for(var letter in lettersToCodes) {
 		codesToLetters[lettersToCodes[letter]] = letter;
@@ -20,9 +20,13 @@ var alphabet = (function(lettersToCodes){
 		},
 		getCode: function(letter) {
 			return lettersToCodes[letter];
-		}
+		},
+		CAPITAL_CODE: capitalCode,
+		NUMERAL_CODE: numeralCode,
+		CAPITAL_LETTER: codesToLetters[capitalCode],
+		NUMERAL_LETTER: codesToLetters[numeralCode]
 	};
-})({'a':1,'b':3,'c':9,'d':25,'e':17,'f':11,'g':27,'h':19,'i':10,'j':26,'k':5,'l':7,'m':13,'n':29,'o':21,'p':15,'q':31,'r':23,'s':14,'t':30,'u':37,'v':39,'x':45,'y':61,'z':53,'ñ':59, 'á': 55, 'é': 46, 'í': 12, 'ó': 44, 'ú': 62, 'ü': 51, '&' : 47, '.' : 4, '[vieneNumero]' : 60, '[vieneMayuscula]' : 40 , ',' : 2, '?' : 34, ';' : 6, '!' : 22, '"' : 38, '(' : 35, ')' : 28, '-' : 36, '*' : 20, ' ' : 0}); // FIXME: dual-cell characters
+})({'a':1,'b':3,'c':9,'d':25,'e':17,'f':11,'g':27,'h':19,'i':10,'j':26,'k':5,'l':7,'m':13,'n':29,'o':21,'p':15,'q':31,'r':23,'s':14,'t':30,'u':37,'v':39,'x':45,'y':61,'z':53,'ñ':59, 'á': 55, 'é': 46, 'í': 12, 'ó': 44, 'ú': 62, 'ü': 51, '&' : 47, '.' : 4, '[vieneNumero]' : 60, '[vieneMayuscula]' : 40 , ',' : 2, '?' : 34, ';' : 6, '!' : 22, '"' : 38, '(' : 35, ')' : 28, '-' : 36, '*' : 20, ' ' : 0}, 40, 60);
 
 var outputText = (function() {
 	var outputText = document.createElement('textarea');
@@ -77,6 +81,15 @@ var BrailleCell = function() {
 
 	cells.push(this);
 	container.appendChild(this.cell);
+};
+
+BrailleCell.forLetter = function(letter) {
+	if(letter !== letter.toLowerCase()) {
+		cell = new BrailleCell();
+		cell.setCharacter(alphabet.CAPITAL_LETTER);
+	}
+	cell = new BrailleCell();
+	cell.setCharacter(letter.toLowerCase());
 };
 
 BrailleCell.prototype.code = function() {
