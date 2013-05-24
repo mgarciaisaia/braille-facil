@@ -37,7 +37,7 @@ var outputText = (function() {
 			while(cells.length) {
 				cells[0].delete();
 			}
-			BrailleCell.forPhrase(this.lastValue);
+			addCells(BrailleCell.forPhrase(this.lastValue));
 		}
 	};
 	outputContainer = document.createElement('div');
@@ -88,25 +88,30 @@ var BrailleCell = function() {
 	};
 
 	this.cell.appendChild(deleteButton);
-
-	cells.push(this);
-	container.appendChild(this.cell);
-	outputText.update();
 };
 
 BrailleCell.forPhrase = function(phrase) {
+	var cells = [];
 	for(var index = 0; index < phrase.length; index++) {
-		BrailleCell.forLetter(phrase[index]);
+		var letterCells = BrailleCell.forLetter(phrase[index]);
+		letterCells.forEach(function(cell) { cells.push(cell); });
 	}
+	return cells;
 };
 
 BrailleCell.forLetter = function(letter) {
+	var cells = [];
 	if(letter !== letter.toLowerCase()) {
-		cell = new BrailleCell();
-		cell.setCharacter(alphabet.CAPITAL_LETTER);
+		cells.push(BrailleCell.forCharacter(alphabet.CAPITAL_LETTER));
 	}
-	cell = new BrailleCell();
-	cell.setCharacter(letter.toLowerCase());
+	cells.push(BrailleCell.forCharacter(letter.toLowerCase()));
+	return cells;
+};
+
+BrailleCell.forCharacter = function(character) {
+	var cell = new BrailleCell();
+	cell.setCharacter(character);
+	return cell;
 };
 
 BrailleCell.prototype.code = function() {
@@ -148,4 +153,24 @@ BrailleCell.prototype.delete = function() {
 	outputText.update();
 };
 
-new BrailleCell();
+function addCells(cells) {
+	cells.forEach(function(cell) {
+		appendCell(cell);
+	});
+	outputText.update();
+};
+
+function appendCell(aCell) {
+	cells.push(aCell);
+	container.appendChild(aCell.cell);
+}
+function addCell(instance) {
+	appendCell(instance);
+	outputText.update();
+}
+
+function newCell() {
+	addCell(BrailleCell.forCharacter(' '));
+};
+
+newCell();
