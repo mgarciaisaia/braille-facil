@@ -8,7 +8,7 @@ Array.prototype.remove = function(element) {
 
 var container = document.getElementById('braille-wrapper');
 
-var alphabet = (function(lettersToCodes, capitalCode, numeralCode){
+var alphabet = (function(lettersToCodes, capitalCode, numeralCode, lettersToNumbers){
 	var codesToLetters = {};
 	for(var letter in lettersToCodes) {
 		codesToLetters[lettersToCodes[letter]] = letter;
@@ -24,9 +24,19 @@ var alphabet = (function(lettersToCodes, capitalCode, numeralCode){
 		CAPITAL_CODE: capitalCode,
 		NUMERAL_CODE: numeralCode,
 		CAPITAL_LETTER: codesToLetters[capitalCode],
-		NUMERAL_LETTER: codesToLetters[numeralCode]
+		NUMERAL_LETTER: codesToLetters[numeralCode],
+		getNumber: function(letter) {
+			return lettersToNumbers[letter];
+		},
+		isNumberizable: function(letter) {
+			return letter in lettersToNumbers;
+		},
+		isNumber: function(letter) {
+			
+		}
 	};
-})({'a':1,'b':3,'c':9,'d':25,'e':17,'f':11,'g':27,'h':19,'i':10,'j':26,'k':5,'l':7,'m':13,'n':29,'o':21,'p':15,'q':31,'r':23,'s':14,'t':30,'u':37,'v':39,'x':45,'y':61,'z':53,'ñ':59, 'á': 55, 'é': 46, 'í': 12, 'ó': 44, 'ú': 62, 'ü': 51, '&' : 47, '.' : 4, '#' : 60, '\u2191' : 40 , ',' : 2, '?' : 34, ';' : 6, '!' : 22, '"' : 38, '(' : 35, ')' : 28, '-' : 36, '*' : 20, ' ' : 0}, 40, 60);
+})({'a':1,'b':3,'c':9,'d':25,'e':17,'f':11,'g':27,'h':19,'i':10,'j':26,'k':5,'l':7,'m':13,'n':29,'o':21,'p':15,'q':31,'r':23,'s':14,'t':30,'u':37,'v':39,'x':45,'y':61,'z':53,'ñ':59, 'á': 55, 'é': 46, 'í': 12, 'ó': 44, 'ú': 62, 'ü': 51, '&' : 47, '.' : 4, '#' : 60, '\u2191' : 40 , ',' : 2, '?' : 34, ';' : 6, '!' : 22, '"' : 38, '(' : 35, ')' : 28, '-' : 36, '*' : 20, ' ' : 0},
+		40, 60, {'a': '1', 'b': '2', 'c': '3', 'd': '4', 'e': '5', 'f': '6', 'g': '7', 'h': '8', 'i': '9', 'j' : '0'});
 
 var outputText = (function() {
 	var outputText = document.createElement('textarea');
@@ -46,12 +56,22 @@ var outputText = (function() {
 
 	return {
 		update: function() {
-			var capitalizeNext = false, number = false;
-			// FIXME: detect & point out double upperCase chars
+			var capitalizeNext = false, numberize = false;
+			// FIXME: detectar y marcar como erroneo dos [vieneMayuscula] seguidas
 			outputText.value = cells.reduce(function(text, aCell) {
 				var character = aCell.getCharacter() || ' ';
 				if(capitalizeNext) {
 					character = character.toUpperCase();
+				}
+				if(numberize) {
+					if(alphabet.isNumberizable(character)) {
+						character = alphabet.getNumber(character);
+					} else {
+						numberize = false;
+					}
+				} else {
+					numberize = aCell.getCharacter() === alphabet.NUMERAL_LETTER;
+					character = numberize ? '' : character;
 				}
 				
 				capitalizeNext = aCell.getCharacter() === alphabet.CAPITAL_LETTER;
