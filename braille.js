@@ -95,7 +95,7 @@ var BrailleCell = function() {
 };
 
 BrailleCell.forPhrase = function(phrase) {
-	for(var index in phrase) {
+	for(var index = 0; index < phrase.length; index++) {
 		BrailleCell.forLetter(phrase[index]);
 	}
 };
@@ -122,13 +122,12 @@ BrailleCell.prototype.code = function() {
 BrailleCell.prototype.setCharacter = function(character) {
 	var code = alphabet.getCode(character);
 	var sortedDots = this.dots.sort(function(previous, next) { return next.value - previous.value; });
-	for(index in sortedDots) {
-		var dot = sortedDots[index];
+	sortedDots.forEach(function(dot) {
 		dot.checked = code >= dot.value;
 		if(dot.checked) {
 			code -= dot.value;
 		}
-	}
+	});
 	this.updateResult();
 };
 
