@@ -46,8 +46,16 @@ var outputText = (function() {
 
 	return {
 		update: function() {
+			var capitalizeNext = false, number = false;
+			// FIXME: detect & point out double upperCase chars
 			outputText.value = cells.reduce(function(text, aCell) {
-				return text + (aCell.getCharacter() || ' ');
+				var character = aCell.getCharacter() || ' ';
+				if(capitalizeNext) {
+					character = character.toUpperCase();
+				}
+				
+				capitalizeNext = aCell.getCharacter() === alphabet.CAPITAL_LETTER;
+				return text + (capitalizeNext ? '' : character);
 			}, '');
 		}
 	};
