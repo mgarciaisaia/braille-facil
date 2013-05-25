@@ -10,8 +10,12 @@ var container = document.getElementById('braille-wrapper');
 
 var alphabet = (function(lettersToCodes, capitalCode, numeralCode, lettersToNumbers){
 	var codesToLetters = {};
+	var numbersToLetters = {};
 	for(var letter in lettersToCodes) {
 		codesToLetters[lettersToCodes[letter]] = letter;
+	}
+	for(var letter in lettersToNumbers) {
+		numbersToLetters[lettersToNumbers[letter]] = letter;
 	}
 
 	return {
@@ -28,11 +32,14 @@ var alphabet = (function(lettersToCodes, capitalCode, numeralCode, lettersToNumb
 		getNumber: function(letter) {
 			return lettersToNumbers[letter];
 		},
+		getNumberLetter: function(number) {
+			return numbersToLetters[number];
+		},
 		isNumberizable: function(letter) {
 			return letter in lettersToNumbers;
 		},
-		isNumber: function(letter) {
-			
+		isNumber: function(number) {
+			return number in numbersToLetters;
 		}
 	};
 })({'a':1,'b':3,'c':9,'d':25,'e':17,'f':11,'g':27,'h':19,'i':10,'j':26,'k':5,'l':7,'m':13,'n':29,'o':21,'p':15,'q':31,'r':23,'s':14,'t':30,'u':37,'v':39,'x':45,'y':61,'z':53,'ñ':59, 'á': 55, 'é': 46, 'í': 12, 'ó': 44, 'ú': 62, 'ü': 51, '&' : 47, '.' : 4, '#' : 60, '\u2191' : 40 , ',' : 2, '?' : 34, ';' : 6, '!' : 22, '"' : 38, '(' : 35, ')' : 28, '-' : 36, '*' : 20, ' ' : 0},
@@ -120,15 +127,26 @@ var BrailleCell = function() {
 
 BrailleCell.forPhrase = function(phrase) {
 	var cells = [];
+	var numberized = { value: false };
 	for(var index = 0; index < phrase.length; index++) {
-		var letterCells = BrailleCell.forLetter(phrase[index]);
+		var letterCells = BrailleCell.forLetter(phrase[index], numberized);
 		letterCells.forEach(function(cell) { cells.push(cell); });
 	}
 	return cells;
 };
 
-BrailleCell.forLetter = function(letter) {
+BrailleCell.forLetter = function(letter, numberized) {
 	var cells = [];
+	if(alphabet.isNumber(letter)) {
+		if(!numberized.value) {
+			cells.push(BrailleCell.forCharacter(alphabet.NUMERAL_LETTER));
+			numberized.value = true;
+		}
+		cells.push(BrailleCell.forCharacter(alphabet.getNumberLetter(letter)));
+		return cells;
+	} else {
+		numberized.value = false;
+	}
 	if(letter !== letter.toLowerCase()) {
 		cells.push(BrailleCell.forCharacter(alphabet.CAPITAL_LETTER));
 	}
