@@ -6,10 +6,13 @@
 		<link rel="stylesheet" type="text/css" href="style.css" />
 	</head>
 	<body>
-		<div id="braille-wrapper">
+		<textarea id="braille-textarea">BrailleF&aacute;cil</textarea>
+		<div id="braille-scroll">
+			<div id="braille-wrapper">
+			</div>
 		</div>
 		<script src="braille.js"></script>
 
-		<input type="button" onclick="newCell();" value="+" />
+		<input type="button" id="braille-newcell-button" onclick="newCell();" value="+" />
 	</body>
 </html>

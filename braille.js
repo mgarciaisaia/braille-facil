@@ -65,7 +65,7 @@ var alphabet = (function(lettersToCodes, capitalCode, numeralCode, lettersToNumb
 		40, 60, {'a': '1', 'b': '2', 'c': '3', 'd': '4', 'e': '5', 'f': '6', 'g': '7', 'h': '8', 'i': '9', 'j' : '0'});
 
 var outputText = (function() {
-	var outputText = document.createElement('textarea');
+	var outputText = document.getElementById("braille-textarea");
 	outputText.lastValue = '';
 	outputText.onkeyup = function() {
 		if(this.value !== this.lastValue) {
@@ -76,9 +76,6 @@ var outputText = (function() {
 			addCells(BrailleCell.forPhrase(this.lastValue));
 		}
 	};
-	outputContainer = document.createElement('div');
-	outputContainer.appendChild(outputText);
-	container.appendChild(outputContainer);
 
 	return {
 		update: function() {
