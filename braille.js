@@ -120,7 +120,7 @@ var BrailleCell = function() {
 		}
 		var dot = document.createElement('input');
 		dot.type = "checkbox";
-		dot.value = Math.pow(2, value);
+		dot.value = value;
 		dot.onclick = function() {
 			that.updateResult();
 		};
@@ -183,7 +183,7 @@ BrailleCell.prototype.code = function() {
 	code = 0;
 	this.dots.forEach(function(aDot) {
 		if(aDot.checked) {
-			code += parseInt(aDot.value);
+			code += Math.pow(2, parseInt(aDot.value));
 		}
 	});
 	return code;
@@ -193,9 +193,9 @@ BrailleCell.prototype.setCharacter = function(character) {
 	var code = alphabet.getCode(character);
 	var sortedDots = this.dots.sort(function(previous, next) { return next.value - previous.value; });
 	sortedDots.forEach(function(dot) {
-		dot.checked = code >= dot.value;
+		dot.checked = code >= Math.pow(2, dot.value);
 		if(dot.checked) {
-			code -= dot.value;
+			code -= Math.pow(2, dot.value);
 		}
 	});
 	this.updateResult();
