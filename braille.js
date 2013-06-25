@@ -103,6 +103,24 @@ var outputText = (function() {
 				capitalizeNext = aCell.getCharacter() === alphabet.CAPITAL_LETTER;
 				return text + (capitalizeNext ? '' : character);
 			}, '');
+			outputPatterns.update();
+		}
+	};
+})();
+
+var outputPatterns = (function() {
+	var outputPatterns = document.createElement('textarea');
+	outputPatterns.readOnly = true;
+	outputPatterns.lastValue = '';
+	outputContainer = document.createElement('div');
+	outputContainer.appendChild(outputPatterns);
+	container.appendChild(outputContainer);
+
+	return {
+		update: function() {
+			outputPatterns.value = cells.reduce(function(text, aCell) {
+				return text + aCell.braillePattern();
+			}, '');
 		}
 	};
 })();
@@ -203,6 +221,11 @@ BrailleCell.prototype.setCharacter = function(character) {
 
 BrailleCell.prototype.getCharacter = function() {
 	return alphabet.getLetter(this.code());
+};
+
+BrailleCell.BLANK_PATTERN_UNICODE = 10240;
+BrailleCell.prototype.braillePattern = function() {
+	return String.fromCharCode(BrailleCell.BLANK_PATTERN_UNICODE + this.code());
 };
 
 BrailleCell.prototype.updateResult = function() {
