@@ -104,6 +104,9 @@ var outputText = (function() {
 				return text + (capitalizeNext ? '' : character);
 			}, '');
 			outputPatterns.update();
+			cells.forEach(function(aCell) {
+				aCell.updateResult();
+			});
 		}
 	};
 })();
@@ -140,7 +143,7 @@ var BrailleCell = function() {
 		dot.type = "checkbox";
 		dot.value = value;
 		dot.onclick = function() {
-			that.updateResult();
+			outputText.update();
 		};
 		that.dots.push(dot);
 		row.appendChild(dot);
@@ -188,6 +191,7 @@ BrailleCell.forLetter = function(letter, numberized) {
 		cells.push(BrailleCell.forCharacter(alphabet.CAPITAL_LETTER));
 	}
 	cells.push(BrailleCell.forCharacter(letter.toLowerCase()));
+	outputText.update();
 	return cells;
 };
 
@@ -216,7 +220,6 @@ BrailleCell.prototype.setCharacter = function(character) {
 			code -= Math.pow(2, dot.value);
 		}
 	});
-	this.updateResult();
 };
 
 BrailleCell.prototype.getCharacter = function() {
@@ -231,7 +234,6 @@ BrailleCell.prototype.braillePattern = function() {
 BrailleCell.prototype.updateResult = function() {
 	this.output.className = this.getCharacter() ? '' : 'error';
 	this.output.value = this.getCharacter() || '';
-	outputText.update();
 };
 
 
