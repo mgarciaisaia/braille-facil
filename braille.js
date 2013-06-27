@@ -107,6 +107,9 @@ var outputText = (function() {
 			cells.forEach(function(aCell) {
 				aCell.updateResult();
 			});
+			if(cells.length !== 0 && cells[cells.length - 1].code() !== 0) {
+				appendCell(BrailleCell.forCharacter(' '));
+			}
 		}
 	};
 })();
