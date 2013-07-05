@@ -71,7 +71,7 @@ var outputText = (function() {
 		if(this.value !== this.lastValue) {
 			this.lastValue = this.value;
 			while(cells.length) {
-				cells[0].delete();
+				cells[0].remove();
 			}
 			addCells(BrailleCell.forPhrase(this.lastValue));
 		}
@@ -162,7 +162,7 @@ var BrailleCell = function() {
 	deleteButton.value = 'x';
 	deleteButton.className = 'delete';
 	deleteButton.onclick = function() {
-		that.delete();
+		that.remove();
 	};
 
 	this.cell.appendChild(deleteButton);
@@ -240,7 +240,7 @@ BrailleCell.prototype.updateResult = function() {
 };
 
 
-BrailleCell.prototype.delete = function() {
+BrailleCell.prototype.remove = function() {
 	this.cell.parentNode && this.cell.parentNode.removeChild(this.cell);
 	cells.remove(this);
 	outputText.update();
